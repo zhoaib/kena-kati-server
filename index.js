@@ -16,6 +16,7 @@ async function run() {
     try {
         const brandsCollection = client.db('kenakati').collection('brands');
         const productsCollection = client.db('kenakati').collection('products');
+        const bookingsCollection = client.db('kenakati').collection('bookings');
 
         app.get('/brands', async (req, res) => {
             const query = {};
@@ -29,6 +30,13 @@ async function run() {
             const product = await productsCollection.find(query).toArray();
             res.send(product);
         });
+
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body
+            console.log(booking);
+            const result = await bookingsCollection.insertOne(booking);
+            res.send(result);
+        })
     }
     finally {
 
