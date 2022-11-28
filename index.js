@@ -34,6 +34,7 @@ async function run() {
         const productsCollection = client.db('kenakati').collection('products');
         const bookingsCollection = client.db('kenakati').collection('bookings');
         const usersCollection = client.db('kenakati').collection('users');
+        const buyersCollection = client.db('kenakati').collection('buyers');
 
         app.get('/brands', async (req, res) => {
             const query = {};
@@ -116,6 +117,19 @@ async function run() {
                 }
             }
             const result = await usersCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+
+        app.get('/buyers', async (req, res) => {
+            const buyer = req.body;
+            const result = await buyersCollection.insertOne(buyer);
+            res.send(result);
+        });
+
+        app.delete('/users/:id', verifyJWT, async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollection.deleteOne(filter);
             res.send(result);
         })
     }
